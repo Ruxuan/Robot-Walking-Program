@@ -1,0 +1,40 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 1/15/2014                                         *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+
+define osc 4
+
+temp var byte
+
+
+start:
+    gosub test
+    
+
+'servo:
+'        for temp = 1 to 10
+'            pulsout portA.1, m_servo
+'            pulsout portA.2, l_servo
+'            pulsout portA.0, r_servo
+'            pause freq
+'        next temp
+'return
+test:
+    for temp = 1 to 10
+        sound portb.7,[70 ,4]
+        high portc.0
+        pause 2000
+        low portc.0
+        pause 2000
+    next temp
+return    
+    
+goto start
+end

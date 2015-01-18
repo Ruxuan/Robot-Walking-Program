@@ -1,0 +1,77 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+trisa = %11111111
+input portC.4
+input portC.3
+
+temp        var byte
+ir_left     var byte
+ir_right    var byte
+l_count     var byte
+r_count     var byte
+l_threshold var byte
+r_threshold var byte
+num_samples var byte
+
+num_samples = 30
+l_threshold = 15
+r_threshold = 15
+
+start:
+        gosub infrared
+        
+        if ir_left = 1 then
+            high portC.0
+            sound portB.7,[130,1,90,2,100,1,110,2]
+        
+        else
+            low portC.0
+        
+        endif
+        
+        if ir_right = 1 then
+            high portC.1
+            sound portB.7,[140,1,120,2,110,1,100,2]
+        
+        else
+            low portC.1
+        endif
+        
+goto start
+
+infrared:
+l_count = 0
+r_count = 0
+ir_right = 0
+ir_left = 0
+
+        for temp = 1 to num_samples
+            
+            if portC.4 = 0 then
+                l_count = l_count + 1
+            endif
+            
+            if portC.3 = 0 then
+                r_count = r_count + 1
+            endif
+            
+        next
+
+        if l_count >= l_threshold then
+            ir_left = 1
+        endif
+        
+        if r_count >= r_threshold then
+            ir_left = 1
+        endif
+return
+
+end

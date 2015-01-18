@@ -1,0 +1,36 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+
+
+ piezo      var portB.7
+ rand_num   var word
+ temp1      var byte
+ 
+ start:
+        high portC.1
+        high portC.0
+        low portB.7
+        pause 1000
+        low portC.1
+        low portC.0
+        high portB.7
+        pause 1000
+        
+ goto start
+ 
+ randomize:
+        Random rand_num
+        temp1 = rand_num & 31 + 64
+        Sound piezo,[temp1,4]
+        return
+        
+ end
+ 

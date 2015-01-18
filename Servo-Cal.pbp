@@ -1,0 +1,45 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+define osc 4
+
+temp    var byte
+freq    var byte
+m_servo var byte
+l_servo var byte
+r_servo var byte
+
+r_servo = 0
+l_servo = 0
+m_servo = 0
+
+freq = 12
+
+start:
+
+        
+        m_servo = 140
+        l_servo = 140
+        r_servo = 140   
+        
+        gosub servo
+        pause 1000
+        
+servo:
+        for temp = 1 to 20
+            pulsout portA.1, m_servo
+            pulsout portA.0, l_servo
+            pulsout portA.2, r_servo
+            pause freq
+        next temp
+return
+
+goto start
+

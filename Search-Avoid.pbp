@@ -1,0 +1,216 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+trisa = %11111111
+input portC.4
+input portC.3
+
+temp        var byte
+temp2       var byte
+timer       var byte
+m_servo     var byte
+l_servo     var byte
+r_servo     var byte
+decision    var word
+ir_left     var byte
+ir_right    var byte
+l_count     var byte
+r_count     var byte
+l_threshold var byte
+r_threshold var byte
+num_samples var byte
+behavior    var byte
+
+num_samples = 30
+l_threshold = 5
+r_threshold = 5
+
+for temp = 1 to 10
+    sound portb.7,[90 + (temp*3),2]
+    toggle portC.0
+    toggle portC.1
+    pause 100
+next temp
+
+start:
+    
+    if portC.7 = 1 then
+        ir_cal
+        
+    gosub infrared
+    
+    portC.0 = ir_left
+    portC.1 = ir_right
+    
+    behavior = ir_left*2 + ir_right
+    
+    if behavior = 0 then
+        gosub walk_forward
+    endif
+    
+    if behavior = 1 then
+        gosub walk_reverse
+        gosub turn_left
+        gosub infrared
+                if ir_right = 1 then
+                    for temp2 = 1 to 2
+                        gosub turn_right
+                    next temp2
+                endif
+    endif
+    
+    if behavior = 2 then
+        gosub walk_backwards
+        gosub turn_right
+        gosub infrared
+                if ir_left = 1 then
+                    for temp2 = 1 to 2
+                        gosub turn_left
+                    next temp2
+                endif
+    endif
+    
+    if behavior = 3 then
+        gosub walk_reverse
+        gosub turn_left
+        gosub infrared
+                if ir_left = 1 then
+                    for temp2 = 1 to 2
+                        gosub turn_right
+                    next temp2
+                endif
+    endif
+    
+goto start            
+
+walk_forward:   
+                m_servo = 170
+                gosub servo
+                l_servo = 160
+                r_servo = 160
+                gosub servo
+                m_servo = 100
+                gosub servo
+                l_servo = 120
+                r_servo = 120
+                gosub servo
+return
+                
+turn_left:
+                sound portB.7,[140,1,80,2,125,1,95,2]
+                
+                for temp = 1 to 2
+                    m_servo = 170
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 160
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 160
+                    r_servo = 120
+                    gosub servo
+                next temp
+return
+                
+walk_backwards:
+                sound portB.7,[90,1,80,2,125,1,90,2,100,2]
+                
+                for temp = 1 to 2
+                    m_servo = 170
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 120
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 160
+                    r_servo = 160
+                    gosub servo
+                next temp
+return
+                
+turn_right:
+                sound portB.7,[140,1,120,2,110,1,100,2]
+                
+                for temp = 1 to 2
+                    m_servo = 170
+                    Gosub servo
+                    l_servo = 160
+                    r_servo = 120
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 160
+                    gosub servo
+                next temp
+return
+
+infrared:
+l_count = 0
+r_count = 0
+ir_right = 0
+ir_left = 0
+
+        for temp = 1 to num_samples
+            
+            if portC.4 = 0 then
+                l_count = l_count + 1
+            endif
+            
+            if portC.3 = 0 then
+                r_count = r_count + 1
+            endif
+            
+        next
+
+        if l_count >= l_threshold then
+            ir_left = 1
+        endif
+        
+        if r_count >= r_threshold then
+            ir_left = 1
+        endif
+return
+
+servo:
+        for timer = 1 to 10
+            pulsout portA.1, m_servo
+            pulsout portA.2, l_servo
+            pulsout portA.0, r_servo
+            pause 13
+        next timer
+return
+
+ir_cal:
+    low portC.0
+    
+    if portC.4 = 0 then
+        high portC.0
+    else
+        low portC.0
+    endif
+    
+    low portC.1
+    
+    if portC.3 = 0 then
+        high portC.1
+    else
+        low portC1
+    endif
+    
+goto start
+
+end
+
+
+
+end

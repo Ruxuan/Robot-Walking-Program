@@ -1,0 +1,97 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+define osc 4
+
+temp    var byte
+timer   var byte
+m_servo var byte
+l_servo var byte
+r_servo var byte
+
+portA.0 = 0
+portA.1 = 0
+portA.2 = 0
+
+m_servo = 140
+l_servo = 140
+r_servo = 140
+
+walk_forward:
+                for temp = 1 to 5
+                    m_servo = 170
+                    gosub servo
+                    l_servo = 160
+                    r_servo = 160
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 120
+                    gosub servo
+                next temp
+                
+turn_left:
+                for temp = 1 to 3
+                    m_servo = 170
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 160
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 160
+                    r_servo = 120
+                    gosub servo
+                next temp
+
+                
+walk_backwards:
+                for temp = 1 to 5
+                    m_servo = 170
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 120
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 160
+                    r_servo = 160
+                    gosub servo
+                next temp
+
+                
+turn_right:
+                for temp = 1 to 3
+                    m_servo = 180
+                    Gosub servo
+                    l_servo = 160
+                    r_servo = 120
+                    gosub servo
+                    m_servo = 100
+                    gosub servo
+                    l_servo = 120
+                    r_servo = 160
+                    gosub servo
+                next temp
+
+
+goto walk_forward
+
+servo:
+        for timer = 1 to 10
+            pulsout portA.0,m_servo
+            pulsout portA.1,l_servo
+            pulsout portA.2,r_servo
+            pause 13
+        next timer                    
+return
+
+end

@@ -1,0 +1,36 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 12/01/2014                                        *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+trisa = %11111111
+input portC.3
+input portC.4
+
+start:
+        low portC.0
+        
+        If portC.0 = 0 then
+            
+            high portC.0
+        else
+            low portC.0
+        endif
+        
+        low portC.1
+        
+        if portC.1 = 0 then
+            
+            high portC.1
+        else
+            low portC.1
+        endif
+
+goto start
+
+end

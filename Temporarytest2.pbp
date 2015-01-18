@@ -1,0 +1,31 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2014 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 1/21/2014                                         *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+define osc 4
+counter   var byte
+
+start:
+    
+    for counter = 1 to 100
+            pulsout portA.0, 140
+            pause 10
+    next counter
+    
+    pause 1000
+    high portC.0
+    pause 1000
+    low portC.0
+    pause 1000
+
+goto start
+
+
+'start:
+'   pulsout portA.0, 140  
